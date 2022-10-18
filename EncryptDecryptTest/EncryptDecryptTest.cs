@@ -6,7 +6,7 @@ namespace EncryptDecryptTest
     public class EncryptDecryptTest
     {
         [TestMethod]
-        public void TestMethod1()
+        public void EncryptTestMethod1()
         {
             //--Arrange
 
@@ -19,7 +19,7 @@ namespace EncryptDecryptTest
         }
 
         [TestMethod]
-        public void TestMethod2()
+        public void EncryptTestMethod2()
         {
             //--Arrange
 
@@ -27,6 +27,20 @@ namespace EncryptDecryptTest
             string expected = "igDcHa N90 32";
             //--Act
             string actual = e.Encrypt();
+            //Assert
+            Assert.AreEqual(expected, actual);
+        }
+
+
+        [TestMethod]
+        public void DecryptTestMethod1()
+        {
+            //--Arrange
+
+            EncryptDecrypts e = new EncryptDecrypts("zxUtYr E90 32", 9);
+            string expected = "qoLkPi V90 32";
+            //--Act
+            string actual = e.Decrypt();
             //Assert
             Assert.AreEqual(expected, actual);
         }
