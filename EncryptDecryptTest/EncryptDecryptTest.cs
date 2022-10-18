@@ -6,7 +6,7 @@ namespace EncryptDecryptTest
     public class EncryptDecryptTest
     {
         [TestMethod]
-        public void EncryptTestMethod1()
+        public void EncryptTestTextFactor3()
         {
             //--Arrange
 
@@ -19,7 +19,7 @@ namespace EncryptDecryptTest
         }
 
         [TestMethod]
-        public void EncryptTestMethod2()
+        public void EncryptTest()
         {
             //--Arrange
 
