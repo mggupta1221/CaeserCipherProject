@@ -1,11 +1,13 @@
 ﻿using System;
+using System.Numerics;
+using System.Runtime.InteropServices;
 using System.Security.Cryptography.X509Certificates;
 
 namespace EncryptDecrypt
 {
     public class EncryptDecrypts
     {
-        public string Text{get; private set;}
+        public string inputString{get; private set;}
         private string EncryptedText = "";
         private string DeccryptedText = "";
 
@@ -13,7 +15,7 @@ namespace EncryptDecrypt
 
         public EncryptDecrypts(string text, int factor)
         {
-            this.Text = text;
+            this.inputString = text;
             this.Factor = factor;
         }
         public EncryptDecrypts()
@@ -21,14 +23,16 @@ namespace EncryptDecrypt
 
         }
 
-        public string Encrypt() // Forward dir
+        public string Encrypt(string inputString,int shiftingFactor) // Forward dir
         {
-            for (int i = 0; i < Text.Length; i++)
+            EncryptDecrypts e = new EncryptDecrypts(inputString, shiftingFactor);
+
+            for (int count = 0; count < inputString.Length; count++)
             {
-                int charInt = (int)(Text[i]);
-                if ((charInt >= 65 && charInt <= 90) || (charInt >= 97 && charInt <= 122))
+                int charInt = (int)(inputString[count]);
+                if (IsAlphabet(charInt))
                 {
-                    int charIntWithFactor = charInt + Factor;
+                    int charIntWithFactor = charInt + shiftingFactor;
                     if (((charIntWithFactor >= 65 && charIntWithFactor <= 90) && (charInt >= 65 && charInt <= 90)) || ((charIntWithFactor >= 97 && charIntWithFactor <= 122) && (charInt >= 97 && charInt <= 122)))
                     {
                         char c = (char)charIntWithFactor;
@@ -53,22 +57,31 @@ namespace EncryptDecrypt
                 }
                 else
                 {
-                    EncryptedText += Text[i];
+                    EncryptedText += inputString[count];
                 }
             }
             return EncryptedText;
         }
-        public string Decrypt()//reverse dir
+        public bool IsAlphabet(int eachCharInt)
         {
-            for (int i = 0; i < Text.Length; i++)
+            if ((eachCharInt >= 65 && eachCharInt <= 90) || (eachCharInt >= 97 && eachCharInt <= 122))
             {
-                int charInt = (int)(Text[i]);
-                if ((charInt >= 65 && charInt <= 90) || (charInt >= 97 && charInt <= 122))
+                return true;
+            }
+            return false;
+        }
+        public string Decrypt(string inputString, int shiftingFactor)//reverse dir
+        {
+            EncryptDecrypts e = new EncryptDecrypts(inputString, shiftingFactor);
+            for (int count = 0; count < inputString.Length; count++)
+            {
+                int charInt = (int)(inputString[count]);
+                if (IsAlphabet(charInt))
                 {
-                    int charIntInc = charInt - Factor;
-                    if (((charIntInc >= 65 && charIntInc <= 90) && (charInt >= 65 && charInt <= 90)) || ((charIntInc >= 97 && charIntInc <= 122) && (charInt >= 97 && charInt <= 122)))
+                    int charIntwithFactor = charInt - shiftingFactor;
+                    if (((charIntwithFactor >= 65 && charIntwithFactor <= 90) && (charInt >= 65 && charInt <= 90)) || ((charIntwithFactor >= 97 && charIntwithFactor <= 122) && (charInt >= 97 && charInt <= 122)))
                     {
-                        char c = (char)charIntInc;
+                        char c = (char)charIntwithFactor;
                         DeccryptedText += c;
                     }
 
@@ -76,26 +89,26 @@ namespace EncryptDecrypt
                     {
                         if ((charInt >= 65 && charInt <= 90))
                         {
-                            if (charIntInc < 65)
+                            if (charIntwithFactor < 65)
                             {
-                                charIntInc = 90 - (64 - charIntInc);
+                                charIntwithFactor = 90 - (64 - charIntwithFactor);
                               
                             }
                          
-                            char c = (char)charIntInc;
+                            char c = (char)charIntwithFactor;
                             DeccryptedText += c;
 
                         }
                         else if ((charInt >= 97 && charInt <= 122)) //lower
                         {
 
-                            if (charIntInc < 97)
+                            if (charIntwithFactor < 97)
                             {
-                                charIntInc = 122 - (96 - charIntInc);
+                                charIntwithFactor = 122 - (96 - charIntwithFactor);
 
                             }
 
-                            char c = (char)charIntInc;
+                            char c = (char)charIntwithFactor;
                             DeccryptedText += c;
                         }
 
@@ -103,47 +116,49 @@ namespace EncryptDecrypt
                 }
                 else
                 {
-                    DeccryptedText += Text[i];
+                    DeccryptedText += inputString[count];
                 }
             }
             return DeccryptedText;
         }
         public static void Main()
         {
-            start:
             try
             {
                 int choice = 0;
-               
+                EncryptDecrypts e = new EncryptDecrypts();
                 Console.Write("Enter text:");
-                string s = Console.ReadLine();
-                Console.Write("Enter factor:");
-                int factor = int.Parse(Console.ReadLine());
+                string inputString = Console.ReadLine();
+                Console.Write("Enter Shifting factor:");
+                int shiftingFactor = int.Parse(Console.ReadLine());
 
-                if (factor < 0)
+                if (shiftingFactor < 0)
                 {
                     throw new Exception("factor must be greater than 0");
                 }
-                Console.WriteLine("Press:\n1.Encrypt\n2.Decrypt");
+                Console.WriteLine("Press:\n1.Encrypt\n2.Decrypt\n0.Exit\n");
                 choice = int.Parse(Console.ReadLine());
 
                 if (choice == 1)
                 {
-                    EncryptDecrypts e = new EncryptDecrypts(s, factor);
-                    string eText = e.Encrypt();
+                    string eText = e.Encrypt(inputString,shiftingFactor);
                     Console.WriteLine("Encrypted Text:" + eText);
                 }
                 else if (choice == 2)
                 {
-                    EncryptDecrypts e = new EncryptDecrypts(s, factor);
-                    string dText = e.Decrypt();
+                    
+                    string dText = e.Decrypt(inputString, shiftingFactor);
                     Console.WriteLine("Decrypted Text:" + dText);
+                }
+                else if (choice == 0)
+                {
+                    Environment.Exit(0);
                 }
                 else
                 {
-                    throw new Exception("Choice must be either 1 or 2:");
+                    throw new Exception("");
                     Console.WriteLine();
-                    goto start;
+                   
                 }
 
             }
@@ -151,7 +166,12 @@ namespace EncryptDecrypt
             {
                 Console.WriteLine(ex.Message);
                 Console.WriteLine();
-                goto start;
+                
+            }
+            catch(NullReferenceException ex1)
+            {
+                Console.WriteLine(ex1.Message);
+                Console.WriteLine() ;
             }
             
         }
