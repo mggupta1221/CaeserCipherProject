@@ -1,4 +1,4 @@
-using EncryptDecrypt;
+using CaeserCipherAlgorithm;
 
 namespace EncryptDecryptTest
 {
@@ -10,10 +10,10 @@ namespace EncryptDecryptTest
         {
             //--Arrange
 
-            EncryptDecrypts e = new EncryptDecrypts("abs123Utb",3);
+            CaeserCipher obj = new CaeserCipher();
             string expected = "dev123Xwe";
             //--Act
-            string actual = e.Encrypt();
+            string actual = obj.DoCeaserCipher("abs123Utb", 3);
             //Assert
             Assert.AreEqual(expected, actual);
         }
@@ -23,10 +23,10 @@ namespace EncryptDecryptTest
         {
             //--Arrange
 
-            EncryptDecrypts e = new EncryptDecrypts("zxUtYr E90 32", 9);
+            CaeserCipher obj = new CaeserCipher();
             string expected = "igDcHa N90 32";
             //--Act
-            string actual = e.Encrypt();
+            string actual = obj.DoCeaserCipher("zxUtYr E90 32", 9);
             //Assert
             Assert.AreEqual(expected, actual);
         }
@@ -37,10 +37,10 @@ namespace EncryptDecryptTest
         {
             //--Arrange
 
-            EncryptDecrypts e = new EncryptDecrypts("zxUtYr E90 32", 9);
+            CaeserCipher obj = new CaeserCipher();
             string expected = "qoLkPi V90 32";
             //--Act
-            string actual = e.Decrypt();
+            string actual = obj.DoCeaserCipher("zxUtYr E90 32", -9);
             //Assert
             Assert.AreEqual(expected, actual);
         }
