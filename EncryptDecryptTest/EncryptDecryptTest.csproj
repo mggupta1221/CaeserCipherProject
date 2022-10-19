@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EncryptDecrypt\EncryptDecrypt.csproj" />
+    <ProjectReference Include="..\EncryptDecrypt\CaeserCipherAlgorithm.csproj" />
   </ItemGroup>
 
 </Project>
